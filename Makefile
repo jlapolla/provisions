@@ -6,7 +6,7 @@ export MK_COMMON := $(abspath common.mk)
 include $(MK_COMMON)
 
 # Recurse into subdirectories.
-SUBDIRS := jquery
+SUBDIRS := bootstrap jquery
 $(foreach VAR,$(SUBDIRS),$(eval $(call RECURSE,$(VAR))))
 
 .PHONY: clean help
