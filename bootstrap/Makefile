@@ -1,4 +1,4 @@
-# Include common functions.
+# Include common Make functions.
 include $(MK_COMMON)
 
 # Private targets.
