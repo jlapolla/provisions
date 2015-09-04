@@ -16,3 +16,6 @@ clean: $(addsuffix /clean,$(SUBDIRS))
 
 # Display help text.
 help: $(addsuffix /help,$(SUBDIRS))
+
+# Display help by default.
+.DEFAULT_GOAL := help
