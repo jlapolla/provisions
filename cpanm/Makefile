@@ -11,6 +11,7 @@ cpanm.pl:
 
 # Help text header.
 HELP_TEXT = $(info App::cpanminus Perl Package Manager)
+HELP_TEXT += $(info URL: http://search.cpan.org/~miyagawa/App-cpanminus/lib/App/cpanminus.pm)
 
 # Public targets.
 HELP_TEXT += $(info [install-sys] Install cpanm for all users (requires root privileges).)
