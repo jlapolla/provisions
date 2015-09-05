@@ -20,6 +20,7 @@ vnu-v15.6.29.jar: vnu-v15.6.29.zip
 
 # Help text header.
 HELP_TEXT = $(info v.Nu HTML Validator)
+HELP_TEXT += $(info URL: https://validator.github.io/validator/) 
 
 # Public targets.
 HELP_TEXT += $(info [vnu-stable.jar] Latest stable v.Nu JAR.)
