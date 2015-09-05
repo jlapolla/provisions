@@ -12,7 +12,8 @@ bootstrap-v3.3.5.min.js:
 	$(call DOWNLOAD,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js,$@)
 
 # Help text header.
-HELP_TEXT = $(info Bootstrap (https://getbootstrap.com/))
+HELP_TEXT = $(info Bootstrap)
+HELP_TEXT += $(info URL: https://getbootstrap.com/)
 
 # Public targets.
 HELP_TEXT += $(info [bootstrap-stable.min.css] Latest stable Bootstrap CSS, minified.)
