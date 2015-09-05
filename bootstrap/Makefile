@@ -24,8 +24,8 @@ HELP_TEXT += $(info [bootstrap-stable.min.js] Latest stable Bootstrap JS, minifi
 bootstrap-stable.min.js: bootstrap-v3.3.5.min.js
 	ln -s $< $@
 
-HELP_TEXT += $(info [bootstrap-theme-stable.min.js] Latest stable Bootstrap theme CSS, minified.)
-bootstrap-theme-stable.min.js: bootstrap-theme-v3.3.5.min.js
+HELP_TEXT += $(info [bootstrap-theme-stable.min.css] Latest stable Bootstrap theme CSS, minified.)
+bootstrap-theme-stable.min.css: bootstrap-theme-v3.3.5.min.css
 	ln -s $< $@
 
 .PHONY: clean help
