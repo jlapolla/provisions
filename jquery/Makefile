@@ -9,7 +9,8 @@ jquery-2.1.4.min.js:
 	$(call DOWNLOAD,https://code.jquery.com/jquery-2.1.4.min.js,$@)
 
 # Help text header.
-HELP_TEXT = $(info jQuery (https://jquery.com/))
+HELP_TEXT = $(info jQuery)
+HELP_TEXT += $(info URL: https://jquery.com/)
 
 # Public targets.
 HELP_TEXT += $(info [jquery-stable.min.js] Latest stable jQuery, minified.)
