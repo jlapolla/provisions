@@ -31,7 +31,7 @@ vnu-stable.jar: vnu-v15.6.29.jar
 
 # Delete build artifacts.
 clean:
-	rm -rf BC3A4B95 vnu.jar*
+	rm -rf BC3A4B95 vnu*
 
 # Display help text.
 help:
