@@ -33,12 +33,12 @@ apr-util-v1.5.4.tar.gz: apr-util-v1.5.4.tar.gz.asc apr-util-v1.5.4-UNVERIFIED.ta
 HELP_TEXT = $(info Apache Portable Rutime)
 
 # Public targets.
-HELP_TEXT += $(info [apr-stable.tar.gz] Latest stable APR.)
-apr-stable.tar.gz: apr-v1.5.2.tar.gz
+HELP_TEXT += $(info [apr.tar.gz] Latest stable APR.)
+apr.tar.gz: apr-v1.5.2.tar.gz
 	ln -s $< $@
 
-HELP_TEXT += $(info [apr-util-stable.tar.gz] Latest stable APR utilities.)
-apr-util-stable.tar.gz: apr-util-v1.5.4.tar.gz
+HELP_TEXT += $(info [apr-util.tar.gz] Latest stable APR utilities.)
+apr-util.tar.gz: apr-util-v1.5.4.tar.gz
 	ln -s $< $@
 
 .PHONY: clean help
