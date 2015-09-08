@@ -10,7 +10,6 @@ APACHE := https://www.apache.org/dist
 
 # Private targets.
 KEY:
-	$(error TODO: Figure out needed signing keys.)
 	$(call GPG_RECV_KEY,$@,$@)
 
 httpd-v2.4.16-UNVERIFIED.tar.gz:

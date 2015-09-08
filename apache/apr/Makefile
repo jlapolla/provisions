@@ -7,7 +7,6 @@ APACHE := https://www.apache.org/dist
 
 # Private targets.
 KEY:
-	$(error TODO: Figure out needed signing keys.)
 	$(call GPG_RECV_KEY,$@,$@)
 
 apr-v1.5.2-UNVERIFIED.tar.gz:
