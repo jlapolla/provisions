@@ -2,7 +2,7 @@
 include $(MK_COMMON)
 
 # Recurse into subdirectories.
-SUBDIRS := apr
+SUBDIRS := apr httpd
 $(foreach VAR,$(SUBDIRS),$(eval $(call RECURSE,$(VAR))))
 
 .PHONY: clean help
