@@ -22,30 +22,30 @@ httpd-v2.4.16.tar.gz: httpd-v2.4.16.tar.gz.asc httpd-v2.4.16-UNVERIFIED.tar.gz |
 	gpg --verify $^
 	cp $(lastword $^) $@
 
-httpd/README: httpd-v2.4.16.tar.gz ../apr/apr-v1.5.2.tar.gz ../apr/apr-util-v1.5.4.tar.gz
+httpd-v2.4.16/README: httpd-v2.4.16.tar.gz ../apr/apr-v1.5.2.tar.gz ../apr/apr-util-v1.5.4.tar.gz
 	rm -rf httpd
 	tar --no-same-owner -xzmf httpd-v2.4.16.tar.gz
 	tar --no-same-owner -xzmf ../apr/apr-v1.5.2.tar.gz
 	tar --no-same-owner -xzmf ../apr/apr-util-v1.5.4.tar.gz
 	mv httpd-2.4.16 httpd
-	mv apr-1.5.2 httpd/srclib/apr
-	mv apr-util-v1.5.4 httpd/srclib/apr-util
+	mv apr-1.5.2 httpd-v2.4.16/srclib/apr
+	mv apr-util-v1.5.4 httpd-v2.4.16/srclib/apr-util
 
 ifeq ($(CURRENT_GOAL),install-home)
-httpd/Makefile: httpd/README
+httpd-v2.4.16/Makefile: httpd-v2.4.16/README
 	cd httpd && ./configure --with-included-apr --prefix="$(HOME)/usr/local"
 else
-httpd/Makefile: httpd/README
+httpd-v2.4.16/Makefile: httpd-v2.4.16/README
 	cd httpd && ./configure --with-included-apr
 endif
 
-httpd/httpd: httpd/Makefile
+httpd-v2.4.16/httpd: httpd-v2.4.16/Makefile
 	$(MAKE) -C httpd all
 
-$(HOME)/usr/local/apache2/bin/httpd: httpd/httpd
+$(HOME)/usr/local/apache2/bin/httpd: httpd-v2.4.16/httpd
 	$(MAKE) -C httpd install
 
-/usr/local/apache2/bin/httpd: httpd/httpd
+/usr/local/apache2/bin/httpd: httpd-v2.4.16/httpd
 	sudo $(MAKE) -C httpd install
 
 # Help text header.
