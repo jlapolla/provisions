@@ -16,7 +16,7 @@ httpd-v2.4.16-UNVERIFIED.tar.gz:
 httpd-v2.4.16.tar.gz.asc:
 	$(call DOWNLOAD,$(APACHE)/httpd/httpd-2.4.16.tar.gz.asc,$@)
 
-httpd-v2.4.16.tar.gz: httpd-v2.4.16.tar.gz.asc httpd-v2.4.16-UNVERIFIED-tar.gz | KEY
+httpd-v2.4.16.tar.gz: httpd-v2.4.16.tar.gz.asc httpd-v2.4.16-UNVERIFIED.tar.gz | KEY
 	gpg --verify $^
 	cp $(lastword $^) $@
 
