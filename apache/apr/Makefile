@@ -20,11 +20,11 @@ apr-v1.5.2.tar.gz: apr-v1.5.2.tar.gz.asc apr-v1.5.2-UNVERIFIED.tar.gz | KEY
 	gpg --verify $^
 	cp $(lastword $^) $@
 
-apr-util-v1.5.4.tar-UNVERIFIED.gz:
-	$(call DOWNLOAD,$(MIRROR)/apr/apr-util-1.5.4.tar.gz,$@)
+apr-util-v1.5.4-UNVERIFIED.tar.gz:
+	$(call DOWNLOAD,$(MIRROR)/apr/apr-util-v1.5.4.tar.gz,$@)
 
 apr-util-v1.5.4.tar.gz.asc:
-	$(call DOWNLOAD,$(APACHE)/apr/apr-util-1.5.4.tar.gz.asc,$@)
+	$(call DOWNLOAD,$(APACHE)/apr/apr-util-v1.5.4.tar.gz.asc,$@)
 
 apr-util-v1.5.4.tar.gz: apr-util-v1.5.4.tar.gz.asc apr-util-v1.5.4-UNVERIFIED.tar.gz | KEY
 	gpg --verify $^
