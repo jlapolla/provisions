@@ -52,8 +52,8 @@ $(HOME)/usr/local/apache2/bin/httpd: httpd-v2.4.16/httpd
 HELP_TEXT = $(info Apache HTTP Server)
 
 # Public targets.
-HELP_TEXT += $(info [httpd-stable.tar.gz] Latest stable Apache HTTP server source distribution.)
-httpd-stable.tar.gz: httpd-v2.4.16.tar.gz
+HELP_TEXT += $(info [httpd.tar.gz] Latest stable Apache HTTP server source distribution.)
+httpd.tar.gz: httpd-v2.4.16.tar.gz
 	ln -s $< $@
 
 HELP_TEXT += $(info [install-sys] Install Apache HTTP server for all users (requires root privileges).)
