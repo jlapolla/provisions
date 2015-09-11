@@ -4,8 +4,9 @@
 
 set -e
 
+# Test private targets.
 make clean
-test `find . ! -name '*.swp' | wc -w` = 4
+test `find . -mindepth 1 -maxdepth 1 ! -name '*.swp' | sed 's:^\./::' | wc -w` = 3
 
 make 39FF092C
 make -q 39FF092C
@@ -28,6 +29,10 @@ make -q apr-util-v1.5.4.tar.gz.asc
 make apr-util-v1.5.4.tar.gz
 make -q apr-util-v1.5.4.tar.gz
 
+# Test public targets.
+make clean
+test `find . -mindepth 1 -maxdepth 1 ! -name '*.swp' | sed 's:^\./::' | wc -w` = 3
+
 make apr.tar.gz
 make -q apr.tar.gz
 
@@ -35,13 +40,4 @@ make apr-util.tar.gz
 make -q apr-util.tar.gz
 
 make clean
-test `find . ! -name '*.swp' | wc -w` = 4
-
-make apr.tar.gz
-make -q apr.tar.gz
-
-make apr-util.tar.gz
-make -q apr-util.tar.gz
-
-make clean
-test `find . ! -name '*.swp' | wc -w` = 4
+test `find . -mindepth 1 -maxdepth 1 ! -name '*.swp' | sed 's:^\./::' | wc -w` = 3
