@@ -56,3 +56,6 @@ help:
 # Run test script.
 test:
 	./test.sh
+
+# Display help by default.
+.DEFAULT_GOAL := help
