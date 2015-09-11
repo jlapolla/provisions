@@ -36,11 +36,11 @@ HELP_TEXT += $(info URL: https://apr.apache.org/)
 # Public targets.
 HELP_TEXT += $(info [apr.tar.gz] Latest stable APR.)
 apr.tar.gz: apr-v1.5.2.tar.gz
-	ln -s $< $@
+	ln -sf $< $@
 
 HELP_TEXT += $(info [apr-util.tar.gz] Latest stable APR utilities.)
 apr-util.tar.gz: apr-util-v1.5.4.tar.gz
-	ln -s $< $@
+	ln -sf $< $@
 
 .PHONY: clean help test
 
