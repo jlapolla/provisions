@@ -1,82 +1,52 @@
-# Include common Make functions.
-include $(MK_COMMON)
+# GMTK require directive
+include require.mk
 
-# Recurse into subdirectories.
-$(eval $(call RECURSE,..))
+# Require submodules
+$(call ,$(call require,$(d)apr/Makefile))
 
-# Private variables.
-MIRROR := http://mirror.cogentco.com/pub/apache
-APACHE := https://www.apache.org/dist
+# Include libraries used in THIS Makefile
+include recv_key.mk
+include helpdoc.mk
+include verify_sig.mk
+include download.mk
 
-# Private targets.
-791485A8:
-	$(call GPG_RECV_KEY,$@,$@)
+# Control compilation with a template
+define $(d)template
+# Variabes
+$(eval $(d)mirror := http://mirror.cogentco.com/pub/apache/)
+$(eval $(d)apache := https://www.apache.org/dist/)
 
-httpd-v2.4.16-UNVERIFIED.tar.gz:
-	$(call DOWNLOAD,$(MIRROR)/httpd/httpd-2.4.16.tar.gz,$@)
+# Specific rules
+$(d)791485A8:
+	$$(call recv_key,$$(notdir $$@),$$@)
 
-httpd-v2.4.16.tar.gz.asc:
-	$(call DOWNLOAD,$(APACHE)/httpd/httpd-2.4.16.tar.gz.asc,$@)
+$(d)httpd-v2.4.16-UNVERIFIED.tar.gz:
+	$$(call download,$($(d)mirror)httpd/httpd-2.4.16.tar.gz,$$@)
 
-httpd-v2.4.16.tar.gz: httpd-v2.4.16.tar.gz.asc httpd-v2.4.16-UNVERIFIED.tar.gz | 791485A8
-	gpg --verify $^
-	cp $(lastword $^) $@
+$(d)httpd-v2.4.16.tar.gz.asc:
+	$$(call download,$($(d)apache)httpd/httpd-2.4.16.tar.gz.asc,$$@)
 
-httpd-v2.4.16/README: httpd-v2.4.16.tar.gz ../apr/apr-v1.5.2.tar.gz ../apr/apr-util-v1.5.4.tar.gz
-	rm -rf httpd
-	tar --no-same-owner -xzmf httpd-v2.4.16.tar.gz
-	tar --no-same-owner -xzmf ../apr/apr-v1.5.2.tar.gz
-	tar --no-same-owner -xzmf ../apr/apr-util-v1.5.4.tar.gz
-	mv httpd-2.4.16 httpd-v2.4.16
-	mv apr-1.5.2 httpd-v2.4.16/srclib/apr
-	mv apr-util-1.5.4 httpd-v2.4.16/srclib/apr-util
+$(d)httpd-v2.4.16.tar.gz: $(d)httpd-v2.4.16.tar.gz.asc $(d)httpd-v2.4.16-UNVERIFIED.tar.gz | $(d)791485A8
+	$$(call verify_sig,$$(firstword $$^),$$(lastword $$^))
+	cp $$(lastword $$^) $$@
 
-ifeq ($(MAKECMDGOALS),install-home)
-httpd-v2.4.16/Makefile: httpd-v2.4.16/README
-	cd httpd-v2.4.16 && ./configure --with-included-apr --prefix="$(HOME)/usr/local/apache2"
-else
-httpd-v2.4.16/Makefile: httpd-v2.4.16/README
-	cd httpd-v2.4.16 && ./configure --with-included-apr
-endif
+# Summary rules
+$(call helpdoc,$(d)httpd.tar.gz)
+$(d)httpd.tar.gz: $(d)httpd-v2.4.16.tar.gz
+	ln -sf $$(notdir $$<) $$@
 
-httpd-v2.4.16/httpd: httpd-v2.4.16/Makefile
-	$(MAKE) -C httpd-v2.4.16 all
+.PHONY: $(d)clean
+$(call helpdoc,$(d)clean)
+$(d)clean: $(d)apr/clean
+	rm -rf $(d)httpd* $(d)791485A8
 
-$(HOME)/usr/local/apache2/bin/httpd: httpd-v2.4.16/httpd
-	$(MAKE) -C httpd-v2.4.16 install
+$(eval .DEFAULT_GOAL := help)
+endef
 
-/usr/local/apache2/bin/httpd: httpd-v2.4.16/httpd
-	sudo $(MAKE) -C httpd-v2.4.16 install
+# Compile template
+$(eval $($(d)template))
 
-# Help text header.
-HELP_TEXT = $(info Apache HTTP Server)
-HELP_TEXT += $(info URL: https://httpd.apache.org/)
-
-# Public targets.
-HELP_TEXT += $(info [httpd.tar.gz] Latest stable Apache HTTP server source.)
-httpd.tar.gz: httpd-v2.4.16.tar.gz
-	ln -sf $< $@
-
-HELP_TEXT += $(info [install-sys] Install Apache HTTP server under /usr/local/apache2 (requires root privileges).)
-install-sys: /usr/local/apache2/bin/httpd
-
-HELP_TEXT += $(info [install-home] Install Apache HTTP server under ~/usr/local/apache2.)
-install-home: $(HOME)/usr/local/apache2/bin/httpd
-
-.PHONY: clean help test install-sys install-home
-
-# Delete build artifacts.
-clean:
-	rm -rf apr* httpd* 791485A8
-
-# Display help text.
-help:
-	$(HELP_TEXT)
-	@true
-
-# Run test script.
-test:
-	./test.sh
-
-# Display help by default.
-.DEFAULT_GOAL := help
+# Free memory
+$(eval $(d)template :=)
+$(eval $(d)mirror :=)
+$(eval $(d)apache :=)
