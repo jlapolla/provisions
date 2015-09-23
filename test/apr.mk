@@ -2,4 +2,4 @@
 include require.mk
 
 # Require Makefiles
-$(call ,$(call require,$(d)apache/apr/Makefile))
+$(call ,$(call require,$(d)apache/httpd/apr/Makefile))

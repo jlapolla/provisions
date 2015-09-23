@@ -2,7 +2,7 @@
 
 set -e
 
-d=apache/apr/
+d=apache/httpd/apr/
 make="make -f test/apr.mk"
 
 targets=
