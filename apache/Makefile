@@ -1,17 +1,24 @@
-# Include common Make functions.
-include $(MK_COMMON)
+# GMTK require directive
+include require.mk
 
-# Recurse into subdirectories.
-SUBDIRS := apr httpd
-$(foreach VAR,$(SUBDIRS),$(eval $(call RECURSE,$(VAR))))
+# Require submodules
+$(call ,$(call require,$(d)httpd/Makefile))
 
-.PHONY: clean help
+# Include libraries used in THIS Makefile
+include helpdoc.mk
 
-# Delete build artifacts.
-clean: $(addsuffix /clean,$(SUBDIRS))
+# Control compilation with a template
+define $(d)template
+# Summary rules
+.PHONY: $(d)clean
+$(call helpdoc,$(d)clean)
+$(d)clean: $(d)httpd/clean
 
-# Display help text.
-help: $(addsuffix /help,$(SUBDIRS))
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Display help by default.
-.DEFAULT_GOAL := help
+# Compile template
+$(eval $($(d)template))
+
+# Free memory
+$(eval $(d)template :=)
