@@ -38,7 +38,7 @@ $(d)httpd.tar.gz: $(d)httpd-v2.4.16.tar.gz
 .PHONY: $(d)clean
 $(call helpdoc,$(d)clean)
 $(d)clean: $(d)apr/clean
-	rm -rf $(d)httpd* $(d)791485A8
+	rm -rf $(d)build* $(d)httpd* $(d)791485A8
 
 $(eval .DEFAULT_GOAL := help)
 endef
