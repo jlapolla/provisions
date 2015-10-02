@@ -2,7 +2,7 @@
 include require.mk
 
 # Require submodules
-$(call ,$(call require,$(d)apache/Makefile))
+$(call ,$(call require,$(d)apache/Makefile $(d)bootstrap/Makefile))
 
 # Include libraries used in THIS Makefile
 include helpdoc.mk
@@ -12,7 +12,7 @@ define $(d)template
 # Summary rules
 .PHONY: $(d)clean
 $(call helpdoc,$(d)clean)
-$(d)clean: $(d)apache/clean
+$(d)clean: $(d)apache/clean $(d)bootstrap/clean
 
 $(eval .DEFAULT_GOAL := help)
 endef
