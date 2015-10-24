@@ -1,37 +1,32 @@
-# Include common Make functions.
-include $(MK_COMMON)
+define $(d)template
+$(eval include download.mk)
+$(eval include helpdoc.mk)
 
-# Private targets.
-jquery-1.11.3.min.js:
-	$(call DOWNLOAD,https://code.jquery.com/jquery-1.11.3.min.js,$@)
+$(d)jquery-1.11.3.min.js:
+	$(call download,https://code.jquery.com/jquery-1.11.3.min.js,$$@)
 
-jquery-2.1.4.min.js:
-	$(call DOWNLOAD,https://code.jquery.com/jquery-2.1.4.min.js,$@)
+$(d)jquery-2.1.4.min.js:
+	$(call download,https://code.jquery.com/jquery-2.1.4.min.js,$$@)
 
-# Help text header.
-HELP_TEXT = $(info jQuery)
-HELP_TEXT += $(info URL: https://jquery.com/)
+$(call helpdoc,$(d)jquery.min.js,Latest stable jQuery)
+$(d)jquery.min.js: $(d)jquery-2.1.4.min.js
+	ln -sf $$(notdir $$<) $$@
 
-# Public targets.
-HELP_TEXT += $(info [jquery-stable.min.js] Latest stable jQuery, minified.)
-jquery-stable.min.js: jquery-2.1.4.min.js
-	ln -s $< $@
+$(call helpdoc,$(d)jquery-v1.min.js,Latest stable jQuery (major version 1 compatible))
+$(d)jquery-v1.min.js: $(d)jquery-1.11.3.min.js
+	ln -sf $$(notdir $$<) $$@
 
-HELP_TEXT += $(info [jquery-stable-v1.min.js] Latest stable jQuery version 1, minified.)
-jquery-stable-v1.min.js: jquery-1.11.3.min.js
-	ln -s $< $@
+$(call helpdoc,$(d)jquery-v2.min.js,Latest stable jQuery (major version 2 compatible))
+$(d)jquery-v2.min.js: $(d)jquery-2.1.4.min.js
+	ln -sf $$(notdir $$<) $$@
 
-HELP_TEXT += $(info [jquery-stable-v2.min.js] Latest stable jQuery version 2, minified.)
-jquery-stable-v2.min.js: jquery-2.1.4.min.js
-	ln -s $< $@
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean:
+	rm -f $(d)jquery*
 
-.PHONY: clean help
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Delete build artifacts.
-clean:
-	rm -rf jquery*
-
-# Display help text.
-help:
-	$(HELP_TEXT)
-	@true
+$(eval $($(d)template))
+$(eval $(d)template :=)

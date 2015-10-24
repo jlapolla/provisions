@@ -2,7 +2,7 @@
 include require.mk
 
 # Require submodules
-$(call ,$(call require,$(d)apache/Makefile $(d)bootstrap/Makefile $(d)cpanm/Makefile))
+$(call ,$(call require,$(addprefix $(d),$(addsuffix /Makefile,apache bootstrap cpanm jquery))))
 
 # Include libraries used in THIS Makefile
 include helpdoc.mk
@@ -11,7 +11,7 @@ include helpdoc.mk
 define $(d)template
 .PHONY: $(d)clean
 $(call helpdoc,$(d)clean)
-$(d)clean: $(d)apache/clean $(d)bootstrap/clean $(d)cpanm/clean
+$(d)clean: $(addprefix $(d),$(addsuffix /clean,apache bootstrap cpanm jquery))
 
 $(eval .DEFAULT_GOAL := help)
 endef
