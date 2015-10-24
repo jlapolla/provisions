@@ -1,6 +1,7 @@
 define $(d)template
 $(eval include download.mk)
 $(eval include helpdoc.mk)
+
 $(d)bootstrap-v3.3.5.min.css:
 	$(call download,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css,$$@)
 
@@ -31,5 +32,4 @@ $(eval .DEFAULT_GOAL := help)
 endef
 
 $(eval $($(d)template))
-
 $(eval $(d)template :=)
