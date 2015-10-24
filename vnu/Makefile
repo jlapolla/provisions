@@ -1,39 +1,36 @@
-# Include common Make functions.
-include $(MK_COMMON)
+define $(d)template
+$(eval include download.mk)
+$(eval include helpdoc.mk)
+$(eval include recv_key.mk)
+$(eval include verify_sig.mk)
 
-# Private targets.
-BC3A4B95:
-	$(call GPG_RECV_KEY,$@,$@)
+$(d)BC3A4B95:
+	$(call recv_key,$$(notdir $$@),$$@)
 
-vnu-v15.6.29-UNVERIFIED.zip:
-	$(call DOWNLOAD,https://github.com/validator/validator/releases/download/15.6.29/vnu.jar_15.6.29.zip,$@)
+$(d)vnu-v15.6.29-UNVERIFIED.zip:
+	$(call download,https://github.com/validator/validator/releases/download/15.6.29/vnu.jar_15.6.29.zip,$$@)
 
-vnu-v15.6.29.zip.asc:
-	$(call DOWNLOAD,https://github.com/validator/validator/releases/download/15.6.29/vnu.jar_15.6.29.zip.asc,$@)
+$(d)vnu-v15.6.29.zip.asc:
+	$(call download,https://github.com/validator/validator/releases/download/15.6.29/vnu.jar_15.6.29.zip.asc,$$@)
 
-vnu-v15.6.29.zip: vnu-v15.6.29.zip.asc vnu-v15.6.29-UNVERIFIED.zip | BC3A4B95
-	gpg --verify $^
-	cp $(lastword $^) $@
+$(d)vnu-v15.6.29.zip: $(d)vnu-v15.6.29.zip.asc $(d)vnu-v15.6.29-UNVERIFIED.zip | $(d)BC3A4B95
+	$(call verify_sig,$$(firstword $$^),$$(lastword $$^))
+	cp $$(lastword $$^) $$@
 
-vnu-v15.6.29.jar: vnu-v15.6.29.zip
-	unzip -p $< dist/vnu.jar > $@
+$(d)vnu-v15.6.29.jar: $(d)vnu-v15.6.29.zip
+	unzip -p $$< dist/vnu.jar > $$@
 
-# Help text header.
-HELP_TEXT = $(info v.Nu HTML Validator)
-HELP_TEXT += $(info URL: https://validator.github.io/validator/) 
+$(call helpdoc,$(d)vnu.jar,Latest stable v.Nu HTML validator JAR file. For details see https://validator.github.io/validator/)
+$(d)vnu.jar: $(d)vnu-v15.6.29.jar
+	ln -sf $$(notdir $$<) $$@
 
-# Public targets.
-HELP_TEXT += $(info [vnu-stable.jar] Latest stable v.Nu JAR.)
-vnu-stable.jar: vnu-v15.6.29.jar
-	ln -s $< $@
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean:
+	rm -f $(d)vnu* $(d)BC3A4B95
 
-.PHONY: clean help
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Delete build artifacts.
-clean:
-	rm -rf BC3A4B95 vnu*
-
-# Display help text.
-help:
-	$(HELP_TEXT)
-	@true
+$(eval $($(d)template))
+$(eval $(d)temlpate :=)
