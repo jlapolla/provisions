@@ -15,7 +15,7 @@
 # contain a trailing slash. Defaults to /usr/local/apache2/.
 #
 # <version> [OPTIONAL]
-# Version of Apache HTTP server to install. Defaults to version 2.4.16.
+# Version of Apache HTTP server to install. Defaults to version 2.4.17.
 #
 # RETURNS
 # The name of the ultimate installation build target. Building this
@@ -66,7 +66,6 @@ endef
 
 # Rules template
 define __ext_httpd_install_template
-# Specific rules
 $(__ext_httpd_install_build_dir)httpd/README: $(__ext_httpd_install_base_dir)httpd-v$(__ext_httpd_install_version).tar.gz
 	mkdir -p $(__ext_httpd_install_build_dir)
 	rm -rf $(__ext_httpd_install_build_dir)httpd/
@@ -98,4 +97,4 @@ $(__ext_httpd_install_prefix)bin/httpd: $(__ext_httpd_install_build_dir)httpd/ht
 endef
 
 # Define extension function
-ext_httpd_install = $(strip $(if $(1),,$(eval 1 := /usr/local/apache2/))$(if $(2),,$(eval 2 := 2.4.16))$(call __ext_httpd_install_setvars,$(1),$(2))$(eval $(call __ext_httpd_install_template))$(1)bin/httpd)
+ext_httpd_install = $(strip $(if $(1),,$(eval 1 := /usr/local/apache2/))$(if $(2),,$(eval 2 := 2.4.17))$(call __ext_httpd_install_setvars,$(1),$(2))$(eval $(call __ext_httpd_install_template))$(1)bin/httpd)
