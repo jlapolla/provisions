@@ -1,40 +1,35 @@
-# Include common Make functions.
-include $(MK_COMMON)
+define $(d)template
+$(eval include download.mk)
+$(eval include helpdoc.mk)
 
-# Private targets.
-bootstrap-v3.3.5.min.css:
-	$(call DOWNLOAD,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css,$@)
+$(d)bootstrap-v3.3.5.min.css:
+	$(call download,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css,$$@)
 
-bootstrap-theme-v3.3.5.min.css:
-	$(call DOWNLOAD,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css,$@)
+$(d)bootstrap-v3.3.5.min.js:
+	$(call download,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js,$$@)
 
-bootstrap-v3.3.5.min.js:
-	$(call DOWNLOAD,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js,$@)
+$(d)bootstrap-theme-v3.3.5.min.css:
+	$(call download,https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css,$$@)
 
-# Help text header.
-HELP_TEXT = $(info Bootstrap)
-HELP_TEXT += $(info URL: https://getbootstrap.com/)
+$(call helpdoc,$(d)bootstrap.min.css,Latest stable Bootstrap CSS)
+$(d)bootstrap.min.css: $(d)bootstrap-v3.3.5.min.css
+	ln -sf $$(notdir $$<) $$@
 
-# Public targets.
-HELP_TEXT += $(info [bootstrap-stable.min.css] Latest stable Bootstrap CSS, minified.)
-bootstrap-stable.min.css: bootstrap-v3.3.5.min.css
-	ln -s $< $@
+$(call helpdoc,$(d)bootstrap.min.js,Latest stable Bootstrap JS)
+$(d)bootstrap.min.js: $(d)bootstrap-v3.3.5.min.js
+	ln -sf $$(notdir $$<) $$@
 
-HELP_TEXT += $(info [bootstrap-stable.min.js] Latest stable Bootstrap JS, minified.)
-bootstrap-stable.min.js: bootstrap-v3.3.5.min.js
-	ln -s $< $@
+$(call helpdoc,$(d)bootstrap-theme.min.css,Latest stable Bootstrap theme CSS)
+$(d)bootstrap-theme.min.css: $(d)bootstrap-theme-v3.3.5.min.css
+	ln -sf $$(notdir $$<) $$@
 
-HELP_TEXT += $(info [bootstrap-theme-stable.min.css] Latest stable Bootstrap theme CSS, minified.)
-bootstrap-theme-stable.min.css: bootstrap-theme-v3.3.5.min.css
-	ln -s $< $@
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean:
+	rm -f $(d)bootstrap*
 
-.PHONY: clean help
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Delete build artifacts.
-clean:
-	rm -rf bootstrap*
-
-# Display help text.
-help:
-	$(HELP_TEXT)
-	@true
+$(eval $($(d)template))
+$(eval $(d)template :=)

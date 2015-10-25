@@ -1,3 +1,4 @@
-*
-!Makefile
-!.gitignore
+/*
+!/.gitignore
+!/Makefile
+!/test.sh

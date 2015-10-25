@@ -1,38 +1,18 @@
-# Include common Make functions.
-include $(MK_COMMON)
+define $(d)template
+$(eval include download.mk)
+$(eval include helpdoc.mk)
 
-# Private targets.
-cpanm.pl:
-	$(call DOWNLOAD,https://cpanmin.us,$@)
+$(call helpdoc,$(d)cpanm.pl,App::cpanminus Perl Package Manager. To install in your home directory run "perl $(d)cpanm.pl App::cpanminus". To install system-wide run "perl $(d)cpanm.pl --sudo App::cpanminus". For more details see http://search.cpan.org/~miyagawa/App-cpanminus/lib/App/cpanminus.pm)
+$(d)cpanm.pl:
+	$(call download,https://cpanmin.us,$$@)
 
-/usr/local/bin/cpanm: cpanm.pl
-	perl $< --sudo App::cpanminus
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean:
+	rm -f $(d)cpanm*
 
-$(HOME)/perl5/bin/cpanm: cpanm.pl
-	perl $< App::cpanminus
+$(eval .DEFAULT_GOAL := help)
+endef
 
-$(HOME)/usr/local/bin/cpanm: $(HOME)/perl5/bin/cpanm
-	mkdir -p $(@D)
-	ln -s $< $@
-
-# Help text header.
-HELP_TEXT = $(info App::cpanminus Perl Package Manager)
-HELP_TEXT += $(info URL: http://search.cpan.org/~miyagawa/App-cpanminus/lib/App/cpanminus.pm)
-
-# Public targets.
-HELP_TEXT += $(info [install-sys] Install cpanm for all users (requires root privileges).)
-install-sys: /usr/local/bin/cpanm
-
-HELP_TEXT += $(info [install-home] Install cpanm in your home directory.)
-install-home: $(HOME)/usr/local/bin/cpanm
-
-.PHONY: clean help install-sys install-home
-
-# Delete build artifacts.
-clean:
-	rm -rf cpanm*
-
-# Display help text.
-help:
-	$(HELP_TEXT)
-	@true
+$(eval $($(d)template))
+$(eval $(d)template :=)

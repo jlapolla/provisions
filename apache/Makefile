@@ -1,17 +1,16 @@
-# Include common Make functions.
-include $(MK_COMMON)
+include require.mk
 
-# Recurse into subdirectories.
-SUBDIRS := apr httpd
-$(foreach VAR,$(SUBDIRS),$(eval $(call RECURSE,$(VAR))))
+$(call ,$(call require,$(d)httpd/Makefile))
 
-.PHONY: clean help
+define $(d)template
+$(eval include helpdoc.mk)
 
-# Delete build artifacts.
-clean: $(addsuffix /clean,$(SUBDIRS))
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean: $(d)httpd/clean
 
-# Display help text.
-help: $(addsuffix /help,$(SUBDIRS))
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Display help by default.
-.DEFAULT_GOAL := help
+$(eval $($(d)template))
+$(eval $(d)template :=)

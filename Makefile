@@ -1,21 +1,19 @@
-# Export shared resource paths.
-# Common Make functions.
-export MK_COMMON := $(abspath common.mk)
+# GMTK require directive
+include require.mk
 
-# Include common Make functions.
-include $(MK_COMMON)
+# Require submodules
+$(call ,$(call require,$(addprefix $(d),$(addsuffix /Makefile,apache bootstrap cpanm jquery vnu))))
 
-# Recurse into subdirectories.
-SUBDIRS := apache bootstrap cpanm jquery vnu
-$(foreach VAR,$(SUBDIRS),$(eval $(call RECURSE,$(VAR))))
+# Include libraries used in THIS Makefile
+include helpdoc.mk
 
-.PHONY: clean help
+define $(d)template
+$(call helpdoc,$(d)clean)
+.PHONY: $(d)clean
+$(d)clean: $(addprefix $(d),$(addsuffix /clean,apache bootstrap cpanm jquery vnu))
 
-# Delete build artifacts.
-clean: $(addsuffix /clean,$(SUBDIRS))
+$(eval .DEFAULT_GOAL := help)
+endef
 
-# Display help text.
-help: $(addsuffix /help,$(SUBDIRS))
-
-# Display help by default.
-.DEFAULT_GOAL := help
+$(eval $($(d)template))
+$(eval $(d)template :=)
