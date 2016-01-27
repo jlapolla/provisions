@@ -1,19 +1,24 @@
-# GMTK require directive
-include require.mk
+# List submodules
+$(eval $(d)submodules := $(addsuffix /,$(filter-out extensions .git test,$(patsubst $(if $(d),$(d),./)%,%,$(shell find $(d) -mindepth 1 -maxdepth 1 -type d)))))
 
 # Require submodules
-$(call ,$(call require,$(addprefix $(d),$(addsuffix /Makefile,angular apache bootstrap cpanm jquery nodejs vnu))))
+include require.mk
+$(eval $(d)subexports := $(call require,$(addprefix $(d),$(addsuffix Makefile,$(call $(d)submodules)))))
 
-# Include libraries used in THIS Makefile
 include helpdoc.mk
 
+# Main template
 define $(d)template
-$(call helpdoc,$(d)clean)
+
 .PHONY: $(d)clean
-$(d)clean: $(addprefix $(d),$(addsuffix /clean,angular apache bootstrap cpanm jquery nodejs vnu))
+$(call helpdoc,$(d)clean)
+$(d)clean: $(addprefix $(d),$(addsuffix clean,$(call $(d)submodules)))
 
 $(eval .DEFAULT_GOAL := help)
 endef
-
-$(eval $($(d)template))
+$(eval $(call $(d)template))
 $(eval $(d)template :=)
+
+# Clear local variables
+$(eval $(d)submodules :=)
+$(eval $(d)subexports :=)
